@@ -6,6 +6,6 @@ class Newone extends StatelessWidget {
   @override
   //here i add the newone 
   Widget build(BuildContext context) {
-    return const Text("fresh start newone");
+    return const Text("fresh nice start rice");
   }
 }
