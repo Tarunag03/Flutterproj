@@ -6,6 +6,6 @@ class Newone extends StatelessWidget {
   @override
   //here i add the newone 
   Widget build(BuildContext context) {
-    return const Text("fresh nice start rice");
+    return const Text("all folders added");
   }
 }
