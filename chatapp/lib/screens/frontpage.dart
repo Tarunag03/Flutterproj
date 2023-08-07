@@ -1,3 +1,4 @@
+import 'package:chatapp/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:delayed_widget/delayed_widget.dart';
@@ -114,12 +115,19 @@ class FrontPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                     child: InkWell(
                       borderRadius: BorderRadius.circular(20),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Login()),
+                        );
+                      },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextLiquidFill(
-                          waveDuration: Duration(seconds: 2),
-                          loadDuration: Duration(milliseconds: 900),
+                          waveDuration: Duration(milliseconds: 900),
+                          loadDuration: Duration(milliseconds: 3000),
                           textAlign: TextAlign.center,
                           boxBackgroundColor:
                               const Color.fromARGB(255, 254, 124, 168),

@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
               ),
             ),
       ),
-      home: const Login(),
+      home: const FrontPage(),
     );
   }
 }
