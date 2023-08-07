@@ -1,11 +1,17 @@
+import 'package:chatapp/screens/frontpage.dart';
 import 'package:flutter/material.dart';
 
-class Newone extends StatelessWidget {
-  const Newone({super.key});
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
-  //here i add the newone
   Widget build(BuildContext context) {
-    return const Text("all folders added");
+    return const MaterialApp(
+      home: FrontPage(),
+    );
   }
 }
