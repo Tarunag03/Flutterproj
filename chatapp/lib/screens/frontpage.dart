@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:delayed_widget/delayed_widget.dart';
 
 class FrontPage extends StatelessWidget {
@@ -70,7 +70,73 @@ class FrontPage extends StatelessWidget {
                     borderRadius:
                         BorderRadius.only(topLeft: Radius.circular(70)),
                   ),
+              
+              child:  Column(
+
+                children: [
+               const    SizedBox(height: 15,),
+                const   Text(
+                    "Welcome to Namaste",
+                    style: TextStyle(
+                      fontSize:25,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 1,
+                      wordSpacing: 2,
+                    ),
+                  ),
+                SizedBox(height: MediaQuery.of(context).size.width/7.2,),
+            SizedBox(
+           height: MediaQuery.of(context).size.height/11,
+           width: MediaQuery.of(context).size.width/2.4,
+  child: DefaultTextStyle(
+     style: TextStyle(
+                    
+                     fontSize: 17,
+                     color: Colors.black.withOpacity(0.6),
+                 
+                   ),
+    child: AnimatedTextKit(
+    isRepeatingAnimation: false,
+      animatedTexts: [
+        
+        TyperAnimatedText("Welcome to Indian brand chat app where you can be in touch with your loved one's very easily"),
+      ],
+    ),
+  ),
+),
+               
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              ]),
                 ),
+               
             ),
           ],
         ),
