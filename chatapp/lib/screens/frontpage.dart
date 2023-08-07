@@ -120,7 +120,7 @@ class FrontPage extends StatelessWidget {
                       child:  Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextLiquidFill(
-                        waveDuration: Duration(seconds: 1),
+                        waveDuration: Duration(seconds: 2),
                        loadDuration: Duration(milliseconds: 900),
                         textAlign: TextAlign.center,
                          
