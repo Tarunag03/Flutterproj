@@ -13,33 +13,23 @@ class FrontPage extends StatelessWidget {
       body: Center(
           child: DelayedWidget(
               animation: DelayedAnimations.SLIDE_FROM_BOTTOM, 
-              delayDuration:const  Duration(milliseconds: 500),// Not required
+              delayDuration:const  Duration(milliseconds: 800),
+              animationDuration:const Duration(milliseconds: 1300),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
+                  SizedBox(
                     width: 200,
                     height: 200,
-                    color: Colors.blue,
+    
+                  child: Image.asset(
+                'assets/images/chat.gif'
                   ),
-                  const SizedBox(height: 5),
-                  Container(
-                    width: 200,
-                    height: 200,
-                    color: Colors.red,
                   ),
-                   Container(
-                    width: 200,
-                    height: 200,
-                    color: Colors.blue,
-                  ),
-                   const SizedBox(height: 5),
-                  Container(
-                    width: 200,
-                    height: 200,
-                    color: Colors.red,
-                  ),
-                ],
-              ))),
+                    ]
+    )
+      )
+    )
     );
   }
 }
