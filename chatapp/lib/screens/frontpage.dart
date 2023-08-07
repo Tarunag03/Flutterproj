@@ -72,7 +72,7 @@ class FrontPage extends StatelessWidget {
                     height: 15,
                   ),
                   const Text(
-                    "Welcome to Namaste",
+                    "Welcome to Namasteuh",
                     style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.w600,
@@ -106,9 +106,46 @@ class FrontPage extends StatelessWidget {
                       ),
                     ),
                   ),
+                   SizedBox(
+                    height: MediaQuery.of(context).size.width / 7.2,
+                  ),
+                  Material(
+                    
+                    color: Colors.pinkAccent[100],
+                    borderRadius: BorderRadius.circular(20),
+                    child: InkWell(
+                borderRadius: BorderRadius.circular(20),
+                     
+                      onTap: (){},
+                      child:  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextLiquidFill(
+                        waveDuration: Duration(seconds: 1),
+                       loadDuration: Duration(milliseconds: 900),
+                        textAlign: TextAlign.center,
+                         
+                        boxBackgroundColor: const Color.fromARGB(255, 254, 124, 168),
+                       text: 'Get Started',
+                       waveColor: Colors.white,
+
+                        textStyle: const TextStyle(
+                        color: Colors.white,
+                        
+                         fontSize: 26,
+                         letterSpacing: 1,
+                               fontWeight: FontWeight.bold,
+                      ),
+                          boxWidth:MediaQuery.of(context).size.width / 1.7,
+                          boxHeight: MediaQuery.of(context).size.height / 16,
+                             ),
+                    ),
+                      
+                    ),
+                  )
                 ]),
               ),
             ),
+            
           ],
         ),
       ),
