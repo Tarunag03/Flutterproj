@@ -4,7 +4,7 @@ class Newone extends StatelessWidget {
   const Newone({super.key});
 
   @override
-  //here i add the newone 
+  //here i add the newone
   Widget build(BuildContext context) {
     return const Text("all folders added");
   }
