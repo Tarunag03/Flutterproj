@@ -72,7 +72,7 @@ class FrontPage extends StatelessWidget {
                     height: 15,
                   ),
                   const Text(
-                    "Welcome to Namasteuh",
+                    "Welcome to Namaste",
                     style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.w600,
