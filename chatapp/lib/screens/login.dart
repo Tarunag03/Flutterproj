@@ -44,21 +44,15 @@ class Login extends StatelessWidget {
               const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  AuthContainer(
-                    icon: FontAwesomeIcons.google,
-                  ),
+                  AuthContainer(icon: FontAwesomeIcons.google, auth: ""),
                   SizedBox(
                     width: 15,
                   ),
-                  AuthContainer(
-                    icon: FontAwesome.twitter,
-                  ),
+                  AuthContainer(icon: FontAwesome.phone, auth: "phone"),
                   SizedBox(
                     width: 15,
                   ),
-                  AuthContainer(
-                    icon: FontAwesomeIcons.github,
-                  ),
+                  AuthContainer(icon: FontAwesomeIcons.github, auth: ""),
                 ],
               ),
               const SizedBox(

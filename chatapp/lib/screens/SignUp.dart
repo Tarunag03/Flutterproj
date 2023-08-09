@@ -1,7 +1,7 @@
 import 'package:chatapp/screens/login.dart';
 import 'package:chatapp/widgets/AuthSignupForm.dart';
 import 'package:flutter/material.dart';
-//
+
 import 'package:chatapp/widgets/AuthCircleContainer.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -24,7 +24,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: Padding(
             padding: EdgeInsets.fromLTRB(16, 50, 16, 16),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 const Text(
                   'SignUp Now',
@@ -53,21 +52,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    AuthContainer(
-                      icon: FontAwesomeIcons.google,
-                    ),
+                    AuthContainer(icon: FontAwesomeIcons.google, auth: ""),
                     SizedBox(
                       width: 15,
                     ),
                     AuthContainer(
-                      icon: FontAwesome.twitter,
+                      icon: FontAwesome.phone,
+                      auth: "phone",
                     ),
                     SizedBox(
                       width: 15,
                     ),
-                    AuthContainer(
-                      icon: FontAwesomeIcons.github,
-                    ),
+                    AuthContainer(icon: FontAwesomeIcons.github, auth: ""),
                   ],
                 ),
                 const SizedBox(
