@@ -38,6 +38,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   delayed_widget: ^1.1.2
   animated_text_kit: ^4.2.2
+  icons_plus: ^4.0.0
+  font_awesome_flutter: ^10.5.0
+  form_field_validator: ^1.1.0
 
 dev_dependencies:
   flutter_test:
