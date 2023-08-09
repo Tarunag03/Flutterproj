@@ -8,6 +8,24 @@ class FrontPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Route _createRoute() {
+      return PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => const Login(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(0.0, 1.0);
+          const end = Offset.zero;
+      
+          final tween = Tween(begin: begin, end: end);
+          final offsetAnimation = animation.drive(tween);
+
+          return SlideTransition(
+            position: offsetAnimation,
+            child: child,
+          );
+        },
+      );
+    }
+
     double leftCornerRadius = MediaQuery.of(context).size.width * 0.34;
     print(leftCornerRadius);
     return Material(
@@ -116,18 +134,15 @@ class FrontPage extends StatelessWidget {
                     child: InkWell(
                       borderRadius: BorderRadius.circular(20),
                       onTap: () {
+                        FadeTransition;
                         Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Login()),
-                        );
+                        Navigator.of(context).push(_createRoute());
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextLiquidFill(
-                          waveDuration: Duration(milliseconds: 900),
-                          loadDuration: Duration(milliseconds: 3000),
+                          waveDuration: Duration(milliseconds: 500),
+                          loadDuration: Duration(milliseconds: 4000),
                           textAlign: TextAlign.center,
                           boxBackgroundColor:
                               const Color.fromARGB(255, 254, 124, 168),
