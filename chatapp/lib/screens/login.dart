@@ -45,6 +45,7 @@ class Login extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   AuthContainer(
+                    
                     icon: FontAwesomeIcons.google,
                   ),
                   SizedBox(

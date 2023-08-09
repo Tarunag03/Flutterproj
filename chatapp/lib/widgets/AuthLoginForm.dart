@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:chatapp/screens/firstpage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -12,6 +16,30 @@ class AuthLoginForm extends StatefulWidget {
 }
 
 class _AuthLoginFormState extends State<AuthLoginForm> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  void login() async {
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
+
+    if (email == "" || password == "") {
+      log("Please fill all the fields!");
+    } else {
+      try {
+        UserCredential userCredential = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: email, password: password);
+        if (userCredential.user != null) {
+          Navigator.popUntil(context, (route) => route.isFirst);
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => firstpage()));
+        }
+      } on FirebaseAuthException catch (ex) {
+        log(ex.code.toString());
+      }
+    }
+  }
+
   final _formKey = GlobalKey<FormState>();
   var _isObsecured = true;
   void _toggle() {
@@ -33,6 +61,7 @@ class _AuthLoginFormState extends State<AuthLoginForm> {
       key: _formKey,
       child: Column(children: [
         TextFormField(
+          controller: emailController,
           inputFormatters: [
             LengthLimitingTextInputFormatter(25),
           ],
@@ -47,6 +76,7 @@ class _AuthLoginFormState extends State<AuthLoginForm> {
           height: 12,
         ),
         TextFormField(
+          controller: passwordController,
           inputFormatters: [
             LengthLimitingTextInputFormatter(25),
           ],
@@ -71,6 +101,7 @@ class _AuthLoginFormState extends State<AuthLoginForm> {
           width: 300,
           child: ElevatedButton(
               onPressed: () {
+                login();
                 if (_formKey.currentState!.validate()) {
                   ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Processing Login wait')));
