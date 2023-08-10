@@ -18,7 +18,6 @@ class AuthLoginForm extends StatefulWidget {
 class _AuthLoginFormState extends State<AuthLoginForm> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
   void login() async {
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
