@@ -20,13 +20,14 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
     await FirebaseAuth.instance.verifyPhoneNumber(
         phoneNumber: phone,
         codeSent: (verificationId, resendToken) {
-          // Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //         builder: (context) => //VerifyOtpScreen(
-          //           //verificationId: verificationId)
-          //              )
-          //              );
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => PhoneAuthOtp(
+                    verificationId: verificationId,
+                  )
+                       )
+                       );
         },
         verificationCompleted: (credential) {},
         verificationFailed: (ex) {
@@ -97,13 +98,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                               onPressed: () {
                                 sendOTP();
                                 if (_formKey.currentState!.validate()) {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const PhoneAuthOtp(),
-                                    ),
-                                  );
+                              //sir yha kya dalega wo daal do
                                 } else {
                                   print('hello');
                                 }

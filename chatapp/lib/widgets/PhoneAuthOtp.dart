@@ -1,11 +1,15 @@
 import 'dart:async';
+import 'dart:developer';
 
+import 'package:chatapp/screens/firstpage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class PhoneAuthOtp extends StatefulWidget {
-  const PhoneAuthOtp({super.key});
+  final String verificationId;
+  const PhoneAuthOtp({super.key, required this.verificationId});
   @override
   State<PhoneAuthOtp> createState() {
     return _PhoneAuthOtpState();
@@ -13,6 +17,27 @@ class PhoneAuthOtp extends StatefulWidget {
 }
 
 class _PhoneAuthOtpState extends State<PhoneAuthOtp> {
+  TextEditingController otpController = TextEditingController();
+
+  void verifyOTP() async {
+    String otp = otpController.text.trim();
+
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: widget.verificationId, smsCode: otp);
+
+    try {
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      if (userCredential.user != null) {
+        Navigator.popUntil(context, (route) => route.isFirst);
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => firstpage()));
+      }
+    } on FirebaseAuthException catch (ex) {
+      log(ex.code.toString());
+    }
+  }
+
   TextEditingController usernameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController textEditingController = TextEditingController();
@@ -91,7 +116,7 @@ class _PhoneAuthOtpState extends State<PhoneAuthOtp> {
                     ),
                     cursorColor: Colors.black,
                     animationDuration: const Duration(milliseconds: 300),
-                    controller: textEditingController,
+                    controller: otpController,
                     keyboardType: TextInputType.number,
                     boxShadows: const [
                       BoxShadow(
@@ -101,6 +126,7 @@ class _PhoneAuthOtpState extends State<PhoneAuthOtp> {
                       )
                     ],
                     onCompleted: (v) {
+                      verifyOTP();
                       debugPrint("Completed");
                     },
                     onChanged: (value) {
