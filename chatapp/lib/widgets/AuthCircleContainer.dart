@@ -24,7 +24,12 @@ class _AuthContainerState extends State<AuthContainer> {
         ),
       );
     }
-    
+    if (widget.auth == "google") {
+      print("google");
+    }
+    if (widget.auth == "github") {
+      print("github");
+    }
   }
 
   @override

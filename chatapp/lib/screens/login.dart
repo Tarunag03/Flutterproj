@@ -44,7 +44,7 @@ class Login extends StatelessWidget {
               const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  AuthContainer(icon: FontAwesomeIcons.google, auth: ""),
+                  AuthContainer(icon: FontAwesomeIcons.google, auth: "google"),
                   SizedBox(
                     width: 15,
                   ),
@@ -52,7 +52,7 @@ class Login extends StatelessWidget {
                   SizedBox(
                     width: 15,
                   ),
-                  AuthContainer(icon: FontAwesomeIcons.github, auth: ""),
+                  AuthContainer(icon: FontAwesomeIcons.github, auth: "github"),
                 ],
               ),
               const SizedBox(
