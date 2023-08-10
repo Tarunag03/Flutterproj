@@ -40,7 +40,6 @@ class _AuthSignUPFormState extends State<AuthSignUpForm> {
             " email": email,
           };
           FirebaseFirestore.instance.collection("users").add(userData);
-
           Navigator.pop(context);
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (context) => Login()));

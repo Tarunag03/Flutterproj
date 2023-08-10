@@ -18,26 +18,26 @@
 
 // class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
 
-//   TextEditingController otpController = TextEditingController();
+  // TextEditingController otpController = TextEditingController();
 
-//   void verifyOTP() async {
-//     String otp = otpController.text.trim();
+  // void verifyOTP() async {
+  //   String otp = otpController.text.trim();
 
-//     PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: widget.verificationId, smsCode: otp);
+  //   PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: widget.verificationId, smsCode: otp);
 
-//     try {
-//       UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
-//       if(userCredential.user != null) { 
-//         Navigator.popUntil(context, (route) => route.isFirst);
-//         Navigator.pushReplacement(context, CupertinoPageRoute(
-//           builder: (context) => firstpage()
-//         ));
-//       }
-//     } on FirebaseAuthException catch(ex) {
-//       log(ex.code.toString());
-//     }
+  //   try {
+  //     UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+  //     if(userCredential.user != null) { 
+  //       Navigator.popUntil(context, (route) => route.isFirst);
+  //       Navigator.pushReplacement(context, CupertinoPageRoute(
+  //         builder: (context) => firstpage()
+  //       ));
+  //     }
+  //   } on FirebaseAuthException catch(ex) {
+  //     log(ex.code.toString());
+  //   }
 
-//   }
+  // }
 
 //   @override
 //   Widget build(BuildContext context) {
