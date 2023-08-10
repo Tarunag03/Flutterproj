@@ -1,9 +1,42 @@
+import 'dart:math';
+
+import 'package:chatapp/phone_auth/verify_otp.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
-class PhoneAuthScreen extends StatelessWidget {
+class PhoneAuthScreen extends StatefulWidget {
   const PhoneAuthScreen({super.key});
+
+  @override
+  State<PhoneAuthScreen> createState() => _PhoneAuthScreenState();
+}
+
+class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
+  TextEditingController phoneController = TextEditingController();
+  void sendOTP() async {
+    String phone = "+91"+phoneController.text.trim();
+
+    await FirebaseAuth.instance.verifyPhoneNumber(
+        phoneNumber: phone,
+        codeSent: (verificationId, resendToken) {
+          // Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //         builder: (context) => //VerifyOtpScreen(
+          //           //verificationId: verificationId)
+          //              )
+          //              );
+        },
+        verificationCompleted: (credential) {},
+        verificationFailed: (ex) {
+        //  log(ex.code.toString());
+        },
+        codeAutoRetrievalTimeout: (verificationId) {},
+        timeout: Duration(seconds: 30));
+  }
+
   @override
   Widget build(BuildContext context) {
     GlobalKey<FormState> _formKey = GlobalKey();
@@ -38,6 +71,7 @@ class PhoneAuthScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         IntlPhoneField(
+                          controller: phoneController,
                           focusNode: focusNode,
                           decoration: const InputDecoration(
                             labelText: 'Phone Number',
@@ -61,6 +95,7 @@ class PhoneAuthScreen extends StatelessWidget {
                           width: 300,
                           child: ElevatedButton(
                               onPressed: () {
+                                sendOTP();
                                 if (_formKey.currentState!.validate()) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(

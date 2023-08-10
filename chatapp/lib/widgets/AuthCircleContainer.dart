@@ -24,6 +24,7 @@ class _AuthContainerState extends State<AuthContainer> {
         ),
       );
     }
+    
   }
 
   @override

@@ -1,6 +1,7 @@
 // import 'dart:developer';
 
-// //import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:chatapp/screens/firstpage.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 // //import 'package:firebaseseries/screens/email_auth/signup_screen.dart';
 // //import 'package:firebaseseries/screens/home_screen.dart';
 // import 'package:flutter/cupertino.dart';
@@ -22,14 +23,14 @@
 //   void verifyOTP() async {
 //     String otp = otpController.text.trim();
 
-//    // PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: widget.verificationId, smsCode: otp);
+//     PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: widget.verificationId, smsCode: otp);
 
 //     try {
-//      // UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
-//       //if(userCredential.user != null) {
+//       UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+//       if(userCredential.user != null) { 
 //         Navigator.popUntil(context, (route) => route.isFirst);
 //         Navigator.pushReplacement(context, CupertinoPageRoute(
-//           builder: (context) => Esehi()
+//           builder: (context) => firstpage()
 //         ));
 //       }
 //     } on FirebaseAuthException catch(ex) {

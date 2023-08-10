@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthLoginForm extends StatefulWidget {
   const AuthLoginForm({super.key});
@@ -18,7 +19,6 @@ class AuthLoginForm extends StatefulWidget {
 class _AuthLoginFormState extends State<AuthLoginForm> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
   void login() async {
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
