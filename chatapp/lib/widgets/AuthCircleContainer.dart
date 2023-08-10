@@ -1,4 +1,5 @@
 import 'package:chatapp/screens/PhoneAuthScreen.dart';
+import 'package:chatapp/screens/firstpage.dart';
 import 'package:chatapp/screens/frontpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,15 @@ class _AuthContainerState extends State<AuthContainer> {
     }
   }
 
+  void newuser() async {
+    await googleLogin();
+    if (mounted) {
+      // Navigator.popUntil(context, (route) => route.isFirst);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => firstpage()));
+    }
+  }
+
   void _changeScreen() {
     if (widget.auth == "phone") {
       print('yes phone here');
@@ -49,15 +59,7 @@ class _AuthContainerState extends State<AuthContainer> {
       );
     }
     if (widget.auth == "google") {
-      print('yes google here ');
-      () async {
-        await googleLogin();
-        if (mounted) {
-          Navigator.popUntil(context, (route) => route.isFirst);
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => FrontPage()));
-        }
-      };
+      newuser();
     }
     if (widget.auth == "github") {
       print("github");
