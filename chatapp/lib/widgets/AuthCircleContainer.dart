@@ -1,4 +1,5 @@
 import 'package:chatapp/screens/PhoneAuthScreen.dart';
+import 'package:chatapp/screens/firstpage.dart';
 import 'package:chatapp/screens/frontpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +56,7 @@ class _AuthContainerState extends State<AuthContainer> {
         if (mounted) {
           Navigator.popUntil(context, (route) => route.isFirst);
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => FrontPage()));
+              context, MaterialPageRoute(builder: (context) => firstpage()));
         }
       };
     }
