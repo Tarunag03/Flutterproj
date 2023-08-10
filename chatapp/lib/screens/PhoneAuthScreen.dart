@@ -1,3 +1,4 @@
+import 'package:chatapp/widgets/PhoneAuthOtp.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -35,6 +36,7 @@ class PhoneAuthScreen extends StatelessWidget {
                 ),
                 Expanded(
                   child: Form(
+                    key: _formKey,
                     child: Column(
                       children: [
                         IntlPhoneField(
@@ -62,10 +64,15 @@ class PhoneAuthScreen extends StatelessWidget {
                           child: ElevatedButton(
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content:
-                                              Text('Processing Login wait')));
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const PhoneAuthOtp(),
+                                    ),
+                                  );
+                                } else {
+                                  print('hello');
                                 }
                               },
                               child: const Row(
