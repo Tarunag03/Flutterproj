@@ -320,7 +320,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
-<<<<<<< HEAD
   google_fonts:
     dependency: "direct main"
     description:
@@ -329,7 +328,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.1.0"
-=======
   google_identity_services_web:
     dependency: transitive
     description:
@@ -378,7 +376,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.12.0+2"
->>>>>>> b63186416038b1b81e74b94de3078b78f2d7e22a
   http:
     dependency: transitive
     description:
