@@ -16,7 +16,6 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -53,7 +52,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    AuthContainer(icon: FontAwesomeIcons.google, auth: ""),
+                    AuthContainer(
+                      icon: FontAwesomeIcons.google,
+                      auth: "gopgle",
+                    ),
                     SizedBox(
                       width: 15,
                     ),

@@ -1,7 +1,10 @@
 import 'package:chatapp/screens/PhoneAuthScreen.dart';
+import 'package:chatapp/screens/frontpage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthContainer extends StatefulWidget {
   const AuthContainer({super.key, required this.icon, required this.auth});
@@ -15,16 +18,48 @@ class AuthContainer extends StatefulWidget {
 }
 
 class _AuthContainerState extends State<AuthContainer> {
+  googleLogin() async {
+    print("googleLogin method Called");
+    GoogleSignIn _googleSignIn = GoogleSignIn();
+    try {
+      var reslut = await _googleSignIn.signIn();
+      if (reslut == null) {
+        return;
+      }
+
+      final userData = await reslut.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+          accessToken: userData.accessToken, idToken: userData.idToken);
+      var finalResult =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+    } catch (error) {
+      print(error);
+    }
+  }
+
   void _changeScreen() {
     if (widget.auth == "phone") {
+      print('yes phone here');
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => const PhoneAuthScreen(),
         ),
       );
+      
     }
-    
+     else if (widget.auth == "google") {
+      print('yes google here ');
+      ()async {
+       await googleLogin();
+        if (mounted) {
+          Navigator.popUntil(context, (route) => route.isFirst);
+          Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => FrontPage()));
+        }
+      };
+    }
   }
 
   @override
