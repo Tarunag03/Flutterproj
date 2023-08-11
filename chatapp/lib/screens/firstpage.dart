@@ -14,6 +14,7 @@ class firstpage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void logout() {
+      GoogleSignIn().disconnect();
       FirebaseAuth auth = FirebaseAuth.instance;
       auth.signOut().then((value) {
         Navigator.push(
@@ -25,12 +26,13 @@ class firstpage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-
-        title: Row(children:
-        [ Text('Welcome screen'), 
-        const SizedBox(width: 125,),
-        ElevatedButton(onPressed: logout, child: Icon(Icons.logout_sharp)),
-        ]),        
+        title: Row(children: [
+          Text('Welcome screen'),
+          const SizedBox(
+            width: 125,
+          ),
+          ElevatedButton(onPressed: logout, child: Icon(Icons.logout_sharp)),
+        ]),
       ),
     );
   }
