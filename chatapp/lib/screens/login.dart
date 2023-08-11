@@ -1,4 +1,5 @@
 import 'package:chatapp/screens/SignUp.dart';
+import 'package:chatapp/screens/firstpage.dart';
 import 'package:chatapp/widgets/AuthCircleContainer.dart';
 import 'package:chatapp/widgets/AuthLoginForm.dart';
 import 'package:flutter/material.dart';
@@ -85,7 +86,7 @@ class Login extends StatelessWidget {
                     },
                     child: const Text('Register Now',
                         style: TextStyle(fontSize: 15)),
-                  )
+                  ),
                 ],
               )
             ],
