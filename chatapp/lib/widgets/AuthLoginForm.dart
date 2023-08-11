@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:chatapp/screens/firstpage.dart';
+import 'package:chatapp/screens/resetpassword.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -110,7 +111,25 @@ class _AuthLoginFormState extends State<AuthLoginForm> {
                 'LogIn',
                 style: TextStyle(fontSize: 23),
               )),
+            
+
         ),
+         Center(
+           child: Container(
+               width: MediaQuery.of(context).size.width/1.0,
+               height:60,
+               alignment: Alignment.bottomRight,
+               child: TextButton(
+                 child: const Text(
+            "Forgot Password?",
+            style: TextStyle(color: const Color.fromARGB(255, 236, 40, 190)),
+            textAlign: TextAlign.right,
+                 ),
+                 onPressed: () => Navigator.push(
+              context, MaterialPageRoute(builder: (context) =>ResetPassword())),
+               ),
+             ),
+         ),
       ]),
     );
   }
