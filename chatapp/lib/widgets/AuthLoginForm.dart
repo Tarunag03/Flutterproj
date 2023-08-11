@@ -57,80 +57,84 @@ class _AuthLoginFormState extends State<AuthLoginForm> {
       PatternValidator(r'(?=.*?[#?!@$%^&*-])',
           errorText: 'passwords must have at least one special character')
     ]);
-    return Form(
-      key: _formKey,
-      child: Column(children: [
-        TextFormField(
-          controller: emailController,
-          inputFormatters: [
-            LengthLimitingTextInputFormatter(25),
-          ],
-          decoration: const InputDecoration(
-              label: Text('Email'), icon: FaIcon(FontAwesomeIcons.user)),
-          validator: MultiValidator([
-            EmailValidator(errorText: 'enter a valid email address'),
-            RequiredValidator(errorText: 'Enter Email address')
-          ]),
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        TextFormField(
-          controller: passwordController,
-          inputFormatters: [
-            LengthLimitingTextInputFormatter(25),
-          ],
-          obscureText: _isObsecured,
-          decoration: InputDecoration(
-              suffixIcon: IconButton(
-                padding: const EdgeInsetsDirectional.only(end: 12.0),
-                onPressed: _toggle,
-                icon: _isObsecured
-                    ? const Icon(Icons.visibility)
-                    : const Icon(Icons.visibility_off),
-              ),
-              label: const Text('Password'),
-              icon: const FaIcon(FontAwesomeIcons.lock)),
-          validator: passwordValidator,
-        ),
-        const SizedBox(
-          height: 30,
-        ),
-        SizedBox(
-          height: 50, //height of button
-          width: 300,
-          child: ElevatedButton(
-              onPressed: () {
-                login();
-                if (_formKey.currentState!.validate()) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Processing Login wait')));
-                }
-              },
-              child: const Text(
-                'LogIn',
-                style: TextStyle(fontSize: 23),
-              )),
-            
-
-        ),
-         Center(
-           child: Container(
-               width: MediaQuery.of(context).size.width/1.0,
-               height:60,
-               alignment: Alignment.bottomRight,
-               child: TextButton(
-                 child: const Text(
-            "Forgot Password?",
-            style: TextStyle(color: const Color.fromARGB(255, 236, 40, 190)),
-            textAlign: TextAlign.right,
+    return SingleChildScrollView(
+      child: Form(
+        key: _formKey,
+        child: Column(children: [
+          TextFormField(
+            controller: emailController,
+            inputFormatters: [
+              LengthLimitingTextInputFormatter(25),
+            ],
+            decoration: const InputDecoration(
+                label: Text('Email'), icon: FaIcon(FontAwesomeIcons.user)),
+            validator: MultiValidator([
+              EmailValidator(errorText: 'enter a valid email address'),
+              RequiredValidator(errorText: 'Enter Email address')
+            ]),
+          ),
+          const SizedBox(
+            height: 12,
+          ),
+          TextFormField(
+            controller: passwordController,
+            inputFormatters: [
+              LengthLimitingTextInputFormatter(25),
+            ],
+            obscureText: _isObsecured,
+            decoration: InputDecoration(
+                suffixIcon: IconButton(
+                  padding: const EdgeInsetsDirectional.only(end: 12.0),
+                  onPressed: _toggle,
+                  icon: _isObsecured
+                      ? const Icon(Icons.visibility)
+                      : const Icon(Icons.visibility_off),
+                ),
+                label: const Text('Password'),
+                icon: const FaIcon(FontAwesomeIcons.lock)),
+            validator: passwordValidator,
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          SingleChildScrollView(
+            child: SizedBox(
+              height: 50, //height of button
+              width: 300,
+              child: ElevatedButton(
+                  onPressed: () {
+                    login();
+                    if (_formKey.currentState!.validate()) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Processing Login wait')));
+                    }
+                  },
+                  child: const Text(
+                    'LogIn',
+                    style: TextStyle(fontSize: 23),
+                  )),
+                
+          
+            ),
+          ),
+           Center(
+             child: Container(
+                 width: MediaQuery.of(context).size.width/1.0,
+                 height:60,
+                 alignment: Alignment.bottomRight,
+                 child: TextButton(
+                   child: const Text(
+              "Forgot Password?",
+              style: TextStyle(color: const Color.fromARGB(255, 236, 40, 190)),
+              textAlign: TextAlign.right,
+                   ),
+                   onPressed: () => Navigator.push(
+                context, MaterialPageRoute(builder: (context) =>ResetPassword())),
                  ),
-                 onPressed: () => Navigator.push(
-              context, MaterialPageRoute(builder: (context) =>ResetPassword())),
                ),
-             ),
-         ),
-      ]),
+           ),
+        ]),
+      ),
     );
   }
 }

@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:chatapp/screens/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,19 +13,24 @@ class firstpage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void logout() async {
-      await GoogleSignIn().disconnect();
-      FirebaseAuth.instance.signOut();
-
-      Navigator.pop(context);
+    void logout() {
+      FirebaseAuth auth = FirebaseAuth.instance;
+      auth.signOut().then((value) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Login()));
+      }).onError((error, stackTrace) {
+        log(error.toString());
+      });
     }
 
-    return Center(
-      child: Column(
-        children: [
-          Text('Welcome'),
-          ElevatedButton(onPressed: logout, child: Text('Logout'))
-        ],
+    return Scaffold(
+      appBar: AppBar(
+
+        title: Row(children:
+        [ Text('Welcome screen'), 
+        const SizedBox(width: 125,),
+        ElevatedButton(onPressed: logout, child: Icon(Icons.logout_sharp)),
+        ]),        
       ),
     );
   }
