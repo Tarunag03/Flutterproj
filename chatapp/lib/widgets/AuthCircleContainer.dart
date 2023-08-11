@@ -42,7 +42,7 @@ class _AuthContainerState extends State<AuthContainer> {
   void newuser() async {
     await googleLogin();
     if (mounted) {
-      // Navigator.popUntil(context, (route) => route.isFirst);
+       Navigator.popUntil(context, (route) => route.isFirst);
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => firstpage()));
     }
