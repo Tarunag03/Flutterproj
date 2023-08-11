@@ -28,8 +28,8 @@ class firstpage extends StatelessWidget {
       appBar: AppBar(
         title: Row(children: [
           Text('Welcome screen'),
-          const SizedBox(
-            width: 125,
+          SizedBox(
+            width: MediaQuery.of(context).size.width/3.14,
           ),
           ElevatedButton(onPressed: logout, child: Icon(Icons.logout_sharp)),
         ]),
