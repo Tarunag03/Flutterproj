@@ -1,11 +1,13 @@
 import 'package:chatapp/screens/PhoneAuthScreen.dart';
 import 'package:chatapp/screens/firstpage.dart';
-import 'package:chatapp/screens/frontpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:chatapp/widgets/GitSecretKey.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class AuthContainer extends StatefulWidget {
   const AuthContainer({super.key, required this.icon, required this.auth});
@@ -19,11 +21,13 @@ class AuthContainer extends StatefulWidget {
 }
 
 class _AuthContainerState extends State<AuthContainer> {
+//..
+
   googleLogin() async {
-    print("googleLogin method Called");
     GoogleSignIn _googleSignIn = GoogleSignIn();
     try {
       var reslut = await _googleSignIn.signIn();
+
       if (reslut == null) {
         return;
       }
@@ -32,6 +36,7 @@ class _AuthContainerState extends State<AuthContainer> {
 
       final credential = GoogleAuthProvider.credential(
           accessToken: userData.accessToken, idToken: userData.idToken);
+      print(credential);
       var finalResult =
           await FirebaseAuth.instance.signInWithCredential(credential);
     } catch (error) {
@@ -39,7 +44,19 @@ class _AuthContainerState extends State<AuthContainer> {
     }
   }
 
-  void _changeScreen() {
+  void newuser() async {
+    var user = await googleLogin();
+
+    if (user) {
+      // Navigator.popUntil(context, (route) => route.isFirst);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => firstpage()));
+    } else {
+      return;
+    }
+  }
+
+  void _changeScreen() async {
     if (widget.auth == "phone") {
       print('yes phone here');
       Navigator.push(
@@ -50,15 +67,7 @@ class _AuthContainerState extends State<AuthContainer> {
       );
     }
     if (widget.auth == "google") {
-      print('yes google here ');
-      () async {
-        await googleLogin();
-        if (mounted) {
-          Navigator.popUntil(context, (route) => route.isFirst);
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => firstpage()));
-        }
-      };
+      newuser();
     }
     if (widget.auth == "github") {
       print("github");
