@@ -15,10 +15,15 @@ class PhoneAuthScreen extends StatefulWidget {
 class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
   TextEditingController phoneController = TextEditingController();
   var phoneNumber = "";
+
+  void func(phone) {
+    String phonenumber = phone;
+  }
+
   void sendOTP() async {
     print(phoneNumber);
-    String phone = phoneNumber;
-
+    String phone = phoneNumber.trim();
+    print(phone);
     await FirebaseAuth.instance.verifyPhoneNumber(
         phoneNumber: phone,
         codeSent: (verificationId, resendToken) {
@@ -97,6 +102,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                             onChanged: (phone) {
                               phoneNumber = phone.completeNumber.toString();
                               print(phoneNumber);
+                              func(phoneNumber.toString());
                             },
                             onCountryChanged: (country) {
                               print('Country changed to: ' + country.name);
