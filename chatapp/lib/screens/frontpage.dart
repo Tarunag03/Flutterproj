@@ -1,4 +1,6 @@
+import 'package:chatapp/screens/firstpage.dart';
 import 'package:chatapp/screens/login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:delayed_widget/delayed_widget.dart';
@@ -14,7 +16,7 @@ class FrontPage extends StatelessWidget {
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           const begin = Offset(0.0, 1.0);
           const end = Offset.zero;
-      
+
           final tween = Tween(begin: begin, end: end);
           final offsetAnimation = animation.drive(tween);
 
@@ -134,9 +136,17 @@ class FrontPage extends StatelessWidget {
                     child: InkWell(
                       borderRadius: BorderRadius.circular(20),
                       onTap: () {
-                        FadeTransition;
-                        Navigator.pop(context);
-                        Navigator.of(context).push(_createRoute());
+                        if (FirebaseAuth.instance.currentUser != null) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => firstpage()));
+                        } else {
+                          FadeTransition;
+
+                          Navigator.pop(context);
+                          Navigator.of(context).push(_createRoute());
+                        }
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
