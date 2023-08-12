@@ -1,6 +1,8 @@
 import 'package:chatapp/screens/PhoneAuthScreen.dart';
 import 'package:chatapp/screens/ProfileCompleteScreen.dart';
 import 'package:chatapp/screens/firstpage.dart';
+import 'package:chatapp/screens/login.dart';
+import 'package:chatapp/widgets/reuable_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -27,31 +29,33 @@ class _AuthContainerState extends State<AuthContainer> {
       var reslut = await _googleSignIn.signIn();
 
       if (reslut == null) {
-        return;
+        return reslut;
+      } else {
+        final userData = await reslut!.authentication;
+        print(userData);
+        final credential = GoogleAuthProvider.credential(
+            accessToken: userData.accessToken, idToken: userData.idToken);
+
+        var finalResult =
+            await FirebaseAuth.instance.signInWithCredential(credential);
+        return userData;
       }
-
-      final userData = await reslut.authentication;
-      print(userData);
-      final credential = GoogleAuthProvider.credential(
-          accessToken: userData.accessToken, idToken: userData.idToken);
-
-      var finalResult =
-          await FirebaseAuth.instance.signInWithCredential(credential);
     } catch (error) {
       print(error);
     }
   }
 
   void newuser() async {
-    await googleLogin();
-    if (mounted) {
+    final aa = await googleLogin();
+    if (aa != null) {
       // Navigator.popUntil(context, (route) => route.isFirst);
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => const ProfileCompleteScreen()));
     } else {
-      return;
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => Login()));
     }
   }
 
