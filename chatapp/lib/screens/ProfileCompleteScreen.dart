@@ -1,4 +1,5 @@
 import 'package:chatapp/screens/firstpage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -12,8 +13,15 @@ class ProfileCompleteScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
     TextEditingController emailController = TextEditingController();
-
     TextEditingController usernameController = TextEditingController();
+
+          Map<String, dynamic> userData = {
+            "username": usernameController.text.trim(),
+            " email": emailController.text.trim(),
+          };
+          FirebaseFirestore.instance.collection("users").add(userData);
+
+
     final userNameValidator = MultiValidator([
       MinLengthValidator(8, errorText: 'name must be at least 6 digits long'),
       PatternValidator(r'(?=.*?[#?!@$%^&*-])',
@@ -60,7 +68,8 @@ class ProfileCompleteScreen extends StatelessWidget {
                     ],
                     decoration: const InputDecoration(
                         label: Text('UserName'),
-                        icon: FaIcon(FontAwesomeIcons.person)),
+                         
+                       icon: FaIcon(FontAwesomeIcons.person)),
                     validator: userNameValidator,
                   ),
                   const SizedBox(

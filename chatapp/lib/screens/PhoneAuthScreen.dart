@@ -17,12 +17,12 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
   var phoneNumber = "";
 
   void func(phone) {
-    String phonenumber = phone;
+    String phonenumber = phoneNumber.trim();
   }
 
   void sendOTP() async {
-    print(phoneNumber);
-    String phone = phoneNumber.trim();
+    String phone = "+91" + phoneController.text.trim();
+
     print(phone);
     await FirebaseAuth.instance.verifyPhoneNumber(
         phoneNumber: phone,

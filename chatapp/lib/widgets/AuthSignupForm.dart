@@ -35,11 +35,7 @@ class _AuthSignUPFormState extends State<AuthSignUpForm> {
         UserCredential userCredential = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email, password: password);
         if (userCredential.user != null) {
-          Map<String, dynamic> userData = {
-            "username": username,
-            " email": email,
-          };
-          FirebaseFirestore.instance.collection("users").add(userData);
+         // FirebaseFirestore.instance.collection("users").add(userData);
           Navigator.pop(context);
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (context) => Login()));

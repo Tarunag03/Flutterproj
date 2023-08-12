@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:chatapp/screens/ProfileCompleteScreen.dart';
 import 'package:chatapp/screens/firstpage.dart';
 import 'package:chatapp/screens/resetpassword.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -32,7 +33,7 @@ class _AuthLoginFormState extends State<AuthLoginForm> {
         if (userCredential.user != null) {
           Navigator.popUntil(context, (route) => route.isFirst);
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => firstpage()));
+              context, MaterialPageRoute(builder: (context) => ProfileCompleteScreen()));
         }
       } on FirebaseAuthException catch (ex) {
         log(ex.code.toString());
