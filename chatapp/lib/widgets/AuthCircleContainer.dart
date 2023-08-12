@@ -6,8 +6,6 @@ import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:chatapp/widgets/GitSecretKey.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 class AuthContainer extends StatefulWidget {
   const AuthContainer({super.key, required this.icon, required this.auth});
@@ -33,10 +31,10 @@ class _AuthContainerState extends State<AuthContainer> {
       }
 
       final userData = await reslut.authentication;
-
+      print(userData);
       final credential = GoogleAuthProvider.credential(
           accessToken: userData.accessToken, idToken: userData.idToken);
-      print(credential);
+
       var finalResult =
           await FirebaseAuth.instance.signInWithCredential(credential);
     } catch (error) {

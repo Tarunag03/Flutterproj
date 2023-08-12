@@ -126,7 +126,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                                 child: const Row(
                                   children: [
                                     Padding(
-                                      padding: EdgeInsets.only(left: 50),
+                                      padding: EdgeInsets.only(left: 51),
                                       child: Text(
                                         'Continue',
                                         style: TextStyle(fontSize: 25),
