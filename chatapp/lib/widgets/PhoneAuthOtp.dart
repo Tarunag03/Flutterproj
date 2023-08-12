@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:chatapp/screens/PhoneAuthScreen.dart';
+import 'package:chatapp/screens/ProfileCompleteScreen.dart';
 import 'package:chatapp/screens/firstpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,9 @@ class _PhoneAuthOtpState extends State<PhoneAuthOtp> {
       if (userCredential.user != null) {
         Navigator.popUntil(context, (route) => route.isFirst);
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => firstpage()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => const ProfileCompleteScreen()));
       }
     } on FirebaseAuthException catch (ex) {
       log(ex.code.toString());

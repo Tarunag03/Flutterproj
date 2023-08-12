@@ -1,11 +1,11 @@
 import 'package:chatapp/screens/PhoneAuthScreen.dart';
+import 'package:chatapp/screens/ProfileCompleteScreen.dart';
 import 'package:chatapp/screens/firstpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:chatapp/widgets/GitSecretKey.dart';
 
 class AuthContainer extends StatefulWidget {
   const AuthContainer({super.key, required this.icon, required this.auth});
@@ -47,7 +47,9 @@ class _AuthContainerState extends State<AuthContainer> {
     if (mounted) {
       // Navigator.popUntil(context, (route) => route.isFirst);
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => firstpage()));
+          context,
+          MaterialPageRoute(
+              builder: (context) => const ProfileCompleteScreen()));
     } else {
       return;
     }
