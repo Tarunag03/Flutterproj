@@ -36,15 +36,21 @@ class firstpage extends StatelessWidget {
         title: Text('Fetch user id'),
         actions: [
           ElevatedButton(
-              onPressed: () {
-                logout(context);
-              },
-              child: Text('logout'))
+            onPressed: () {
+              logout(context);
+            },
+            child: Text('Logout'),
+            style: ElevatedButton.styleFrom(
+             
+            ),
+          )
         ],
+        backgroundColor: Colors.pinkAccent[100],
       ),
       body: currentUser != null && currentUser.uid != null
           ? FirestoreFetchUserScreen(userUid: currentUser.uid)
           : Center(child: Text('User not authenticated')),
+      backgroundColor: Colors.white, 
     );
   }
 }
