@@ -140,12 +140,16 @@ class FrontPage extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => firstpage()));
+                                  builder: (context) => firstpage(userUid:FirebaseAuth.instance.currentUser!.uid,)));
                         } else {
                           FadeTransition;
 
                           Navigator.pop(context);
                           Navigator.of(context).push(_createRoute());
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>Login()));
                         }
                       },
                       child: Padding(
@@ -164,7 +168,7 @@ class FrontPage extends StatelessWidget {
                             letterSpacing: 1,
                             fontWeight: FontWeight.bold,
                           ),
-                          boxWidth: MediaQuery.of(context).size.width / 1.7,
+                          boxWidth: MediaQuery.of(context).size.width / 1.4,
                           boxHeight: MediaQuery.of(context).size.height / 16,
                         ),
                       ),

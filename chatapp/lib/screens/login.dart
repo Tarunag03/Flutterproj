@@ -1,13 +1,16 @@
 import 'package:chatapp/screens/SignUp.dart';
-import 'package:chatapp/screens/firstpage.dart';
+import 'package:flutter/material.dart';
+import 'package:chatapp/screens/firstpage.dart'; // Import firstpage
+import 'package:chatapp/screens/ProfileCompleteScreen.dart';
 import 'package:chatapp/widgets/AuthCircleContainer.dart';
 import 'package:chatapp/widgets/AuthLoginForm.dart';
-import 'package:flutter/material.dart';
+import 'package:chatapp/services/utils.dart';
+import 'package:chatapp/services/navigate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:icons_plus/icons_plus.dart'; // Import checkProfileAndNavigate function
 
 class Login extends StatelessWidget {
-  const Login({super.key});
+  const Login({Key? key});
 
   @override
   Widget build(BuildContext context) {

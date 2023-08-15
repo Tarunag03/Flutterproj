@@ -1,16 +1,18 @@
 import 'dart:developer';
 
-import 'package:chatapp/screens/ProfileCompleteScreen.dart';
-import 'package:chatapp/screens/firstpage.dart';
-import 'package:chatapp/screens/resetpassword.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:chatapp/screens/firstpage.dart'; // Import firstpage
+import 'package:chatapp/services/utils.dart';
+import 'package:chatapp/services/navigate.dart'; // Import checkProfileAndNavigate function
+
+import '../screens/resetpassword.dart';
 
 class AuthLoginForm extends StatefulWidget {
-  const AuthLoginForm({super.key});
+  const AuthLoginForm({Key? key}) : super(key: key);
   @override
   State<AuthLoginForm> createState() {
     return _AuthLoginFormState();
@@ -18,8 +20,11 @@ class AuthLoginForm extends StatefulWidget {
 }
 
 class _AuthLoginFormState extends State<AuthLoginForm> {
+  final currentUser = FirebaseAuth.instance;
+
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
   void login() async {
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
@@ -31,9 +36,7 @@ class _AuthLoginFormState extends State<AuthLoginForm> {
         UserCredential userCredential = await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password);
         if (userCredential.user != null) {
-          Navigator.popUntil(context, (route) => route.isFirst);
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => ProfileCompleteScreen()));
+          checkProfileAndNavigate(userCredential.user!, context); // Use the utility function
         }
       } on FirebaseAuthException catch (ex) {
         log(ex.code.toString());
@@ -43,6 +46,7 @@ class _AuthLoginFormState extends State<AuthLoginForm> {
 
   final _formKey = GlobalKey<FormState>();
   var _isObsecured = true;
+
   void _toggle() {
     setState(() {
       _isObsecured = !_isObsecured;
@@ -58,6 +62,7 @@ class _AuthLoginFormState extends State<AuthLoginForm> {
       PatternValidator(r'(?=.*?[#?!@$%^&*-])',
           errorText: 'passwords must have at least one special character')
     ]);
+
     return SingleChildScrollView(
       child: Form(
         key: _formKey,
@@ -84,15 +89,16 @@ class _AuthLoginFormState extends State<AuthLoginForm> {
             ],
             obscureText: _isObsecured,
             decoration: InputDecoration(
-                suffixIcon: IconButton(
-                  padding: const EdgeInsetsDirectional.only(end: 12.0),
-                  onPressed: _toggle,
-                  icon: _isObsecured
-                      ? const Icon(Icons.visibility)
-                      : const Icon(Icons.visibility_off),
-                ),
-                label: const Text('Password'),
-                icon: const FaIcon(FontAwesomeIcons.lock)),
+              suffixIcon: IconButton(
+                padding: const EdgeInsetsDirectional.only(end: 12.0),
+                onPressed: _toggle,
+                icon: _isObsecured
+                    ? const Icon(Icons.visibility)
+                    : const Icon(Icons.visibility_off),
+              ),
+              label: const Text('Password'),
+              icon: const FaIcon(FontAwesomeIcons.lock),
+            ),
             validator: passwordValidator,
           ),
           const SizedBox(
@@ -103,17 +109,18 @@ class _AuthLoginFormState extends State<AuthLoginForm> {
               height: 50, //height of button
               width: 300,
               child: ElevatedButton(
-                  onPressed: () {
-                    login();
-                    if (_formKey.currentState!.validate()) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text('Processing Login wait')));
-                    }
-                  },
-                  child: const Text(
-                    'LogIn',
-                    style: TextStyle(fontSize: 23),
-                  )),
+                onPressed: () {
+                  login();
+                  if (_formKey.currentState!.validate()) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text('Processing Login wait')));
+                  }
+                },
+                child: const Text(
+                  'LogIn',
+                  style: TextStyle(fontSize: 23),
+                ),
+              ),
             ),
           ),
           Center(
@@ -124,12 +131,11 @@ class _AuthLoginFormState extends State<AuthLoginForm> {
               child: TextButton(
                 child: const Text(
                   "Forgot Password?",
-                  style:
-                      TextStyle(color: const Color.fromARGB(255, 236, 40, 190)),
+                  style: TextStyle(color: Color.fromARGB(255, 236, 40, 190)),
                   textAlign: TextAlign.right,
                 ),
-                onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ResetPassword())),
+                onPressed: () =>
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ResetPassword())),
               ),
             ),
           ),

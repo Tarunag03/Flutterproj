@@ -1,32 +1,41 @@
-import 'package:chatapp/screens/firstpage.dart';
+import 'package:chatapp/services/navigate.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:chatapp/services/utils.dart';
+import 'package:chatapp/screens/firstpage.dart'; // Import firstpage
 
 class ProfileCompleteScreen extends StatelessWidget {
-  const ProfileCompleteScreen({super.key});
+  ProfileCompleteScreen({Key? key}) : super(key: key);
+
+  Future<void> inputData(User user) async {
+    Map<String, dynamic> userData = {
+      "username": usernameController.text.trim(),
+      "email": emailController.text.trim(),
+      "uid": user.uid,
+      "profilecomplete":true,
+    };
+
+    await FirebaseFirestore.instance.collection("users").doc(user.uid).set(userData); // Use set instead of add
+  }
+
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
+  final userNameValidator = MultiValidator([
+    MinLengthValidator(8, errorText: 'Name must be at least 8 characters long'),
+    PatternValidator(r'(?=.*?[#?!@$%^&*-])',
+        errorText: 'Name must have at least one special character')
+  ]);
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
-    TextEditingController emailController = TextEditingController();
-    TextEditingController usernameController = TextEditingController();
-
-          Map<String, dynamic> userData = {
-            "username": usernameController.text.trim(),
-            " email": emailController.text.trim(),
-          };
-          FirebaseFirestore.instance.collection("users").add(userData);
-
-
-    final userNameValidator = MultiValidator([
-      MinLengthValidator(8, errorText: 'name must be at least 6 digits long'),
-      PatternValidator(r'(?=.*?[#?!@$%^&*-])',
-          errorText: 'name must have at least one special character')
-    ]);
     return Scaffold(
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: true,
@@ -68,8 +77,7 @@ class ProfileCompleteScreen extends StatelessWidget {
                     ],
                     decoration: const InputDecoration(
                         label: Text('UserName'),
-                         
-                       icon: FaIcon(FontAwesomeIcons.person)),
+                        icon: FaIcon(FontAwesomeIcons.person)),
                     validator: userNameValidator,
                   ),
                   const SizedBox(
@@ -84,7 +92,7 @@ class ProfileCompleteScreen extends StatelessWidget {
                         label: Text('Email'),
                         icon: FaIcon(FontAwesomeIcons.user)),
                     validator: MultiValidator([
-                      EmailValidator(errorText: 'enter a valid email address'),
+                      EmailValidator(errorText: 'Enter a valid email address'),
                       RequiredValidator(errorText: 'Enter Email address')
                     ]),
                   ),
@@ -92,21 +100,21 @@ class ProfileCompleteScreen extends StatelessWidget {
                     height: 25,
                   ),
                   SizedBox(
-                    height: 50, //height of button
+                    height: 50, // Height of button
                     width: 300,
                     child: ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const firstpage()));
-                          }
-                        },
-                        child: const Text(
-                          'Continue to app',
-                          style: TextStyle(fontSize: 23),
-                        )),
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          await inputData(auth.currentUser!);
+                       checkProfileAndNavigate(auth.currentUser!, context);
+                      
+                        }
+                      },
+                      child: const Text(
+                        'Continue to app',
+                        style: TextStyle(fontSize: 23),
+                      ),
+                    ),
                   ),
                 ]),
               ),

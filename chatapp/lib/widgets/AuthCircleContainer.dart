@@ -3,6 +3,7 @@ import 'package:chatapp/screens/ProfileCompleteScreen.dart';
 import 'package:chatapp/screens/firstpage.dart';
 import 'package:chatapp/screens/login.dart';
 import 'package:chatapp/widgets/reuable_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -21,43 +22,60 @@ class AuthContainer extends StatefulWidget {
 }
 
 class _AuthContainerState extends State<AuthContainer> {
-//..
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = GoogleSignIn();
 
-  googleLogin() async {
-    GoogleSignIn _googleSignIn = GoogleSignIn();
+  Future<UserCredential?> googleLogin() async {
     try {
-      var reslut = await _googleSignIn.signIn();
+      final GoogleSignInAccount? googleSignInAccount =
+          await googleSignIn.signIn();
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleSignInAuth =
+            await googleSignInAccount.authentication;
 
-      if (reslut == null) {
-        return reslut;
-      } else {
-        final userData = await reslut!.authentication;
-        print(userData);
-        final credential = GoogleAuthProvider.credential(
-            accessToken: userData.accessToken, idToken: userData.idToken);
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleSignInAuth.accessToken,
+          idToken: googleSignInAuth.idToken,
+        );
 
-        var finalResult =
-            await FirebaseAuth.instance.signInWithCredential(credential);
-        return userData;
+        return await _auth.signInWithCredential(credential);
       }
     } catch (error) {
-      print(error);
+      print("Google Sign-In Error: $error");
     }
+
+    return null;
   }
 
-  void newuser() async {
-    final aa = await googleLogin();
-    if (aa != null) {
-      // Navigator.popUntil(context, (route) => route.isFirst);
+
+
+void newuser() async {
+  UserCredential? userCredential = await googleLogin();
+  if (userCredential != null) {
+    String? uid = userCredential.user?.uid;
+    String? username = userCredential.user?.displayName;
+    String? email = userCredential.user?.email;
+
+    if (uid != null) {
+      // Store user data in Firebase Firestore
+      FirebaseFirestore.instance.collection('users').doc(uid).set({
+        'username': username,
+        'email': email,
+        'uid':uid,
+      });
+
       Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => const ProfileCompleteScreen()));
+        context,
+        MaterialPageRoute(builder: (context) => firstpage(userUid: uid)),
+      );
     } else {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => Login()));
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Login()),
+      );
     }
   }
+}
 
   void _changeScreen() async {
     if (widget.auth == "phone") {

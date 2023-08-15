@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
+import '../services/navigate.dart';
+
 class PhoneAuthOtp extends StatefulWidget {
   final String verificationId;
   final String phone;
@@ -37,11 +39,7 @@ class _PhoneAuthOtpState extends State<PhoneAuthOtp> {
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
       if (userCredential.user != null) {
-        Navigator.popUntil(context, (route) => route.isFirst);
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const ProfileCompleteScreen()));
+        checkProfileAndNavigate(userCredential.user!, context);
       }
     } on FirebaseAuthException catch (ex) {
       log(ex.code.toString());
