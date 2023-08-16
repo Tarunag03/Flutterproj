@@ -30,27 +30,67 @@ class firstpage extends StatelessWidget {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     User? currentUser = _auth.currentUser;
 
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text('Fetch user id'),
-        actions: [
-          ElevatedButton(
-            onPressed: () {
-              logout(context);
-            },
-            child: Text('Logout'),
-            style: ElevatedButton.styleFrom(
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Column(
+            children: [
              
-            ),
-          )
-        ],
-        backgroundColor: Colors.pinkAccent[100],
+              Center(
+                
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 1,right: 30,top: 15),
+                  child: Text('Namaste',
+                  textAlign:TextAlign.center,
+                              
+                  
+                  style: TextStyle(
+                    
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 25,
+                  ),
+                  ),
+                ),
+              ),
+               Center(
+                
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 20,left: 40,),
+                  child: Text('connecting zindagi.....',
+                  textAlign:TextAlign.center,
+                              
+                  
+                  style: TextStyle(
+                    
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                  ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                logout(context);
+              },
+              child: Text('Logout'),
+              style: ElevatedButton.styleFrom(
+               
+              ),
+            )
+          ],
+          backgroundColor: Colors.pinkAccent[100],
+        ),
+        body: currentUser != null && currentUser.uid != null
+            ? FirestoreFetchUserScreen(userUid: currentUser.uid)
+            : Center(child: Text('User not authenticated')),
+        backgroundColor: Colors.white, 
       ),
-      body: currentUser != null && currentUser.uid != null
-          ? FirestoreFetchUserScreen(userUid: currentUser.uid)
-          : Center(child: Text('User not authenticated')),
-      backgroundColor: Colors.white, 
     );
   }
 }

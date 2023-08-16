@@ -9,7 +9,8 @@ class FirestoreFetchUserScreen extends StatefulWidget {
   FirestoreFetchUserScreen({required this.userUid});
 
   @override
-  _FirestoreFetchUserScreenState createState() => _FirestoreFetchUserScreenState();
+  _FirestoreFetchUserScreenState createState() =>
+      _FirestoreFetchUserScreenState();
 }
 
 class _FirestoreFetchUserScreenState extends State<FirestoreFetchUserScreen> {
@@ -18,14 +19,19 @@ class _FirestoreFetchUserScreenState extends State<FirestoreFetchUserScreen> {
   @override
   void initState() {
     super.initState();
-    userDocument = FirebaseFirestore.instance.collection('users').doc(widget.userUid).get();
+    userDocument = FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.userUid)
+        .get();
   }
 
   @override
   Widget build(BuildContext context) {
     TextEditingController controller = TextEditingController();
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        
+      ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -33,14 +39,12 @@ class _FirestoreFetchUserScreenState extends State<FirestoreFetchUserScreen> {
             Container(
               height: MediaQuery.of(context).size.height / 2.8,
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(MediaQuery.of(context).size.height / 4),
-                 
-                 
+                borderRadius: BorderRadius.circular(
+                    MediaQuery.of(context).size.height / 4),
                 child: DrawerHeader(
                   decoration: BoxDecoration(
-                    color: Colors.lightBlue, 
+                    color: Colors.lightBlue,
                   ),
-                  
                   child: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                     future: userDocument,
                     builder: (context, snapshot) {
@@ -58,10 +62,16 @@ class _FirestoreFetchUserScreenState extends State<FirestoreFetchUserScreen> {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                              SizedBox(height: MediaQuery.of(context).size.height / 14),
-                            reusableTextField(username, Icons.verified_user, false, controller),
-                            SizedBox(height: MediaQuery.of(context).size.height / 38),
-                            reusableTextField(email, Icons.email, false, controller),
+                            SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height / 14),
+                            reusableTextField(username, Icons.verified_user,
+                                false, controller),
+                            SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height / 38),
+                            reusableTextField(
+                                email, Icons.email, false, controller),
                           ],
                         );
                       }
@@ -73,7 +83,7 @@ class _FirestoreFetchUserScreenState extends State<FirestoreFetchUserScreen> {
           ],
         ),
       ),
-      backgroundColor: Colors.white, 
+      
     );
   }
 }
