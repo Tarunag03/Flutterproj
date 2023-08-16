@@ -36,38 +36,38 @@ class firstpage extends StatelessWidget {
           automaticallyImplyLeading: false,
           title: Column(
             children: [
-             
+
               Center(
-                
+
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 1,right: 30,top: 15),
                   child: Text('Namaste',
-                  textAlign:TextAlign.center,
-                              
-                  
-                  style: TextStyle(
-                    
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 25,
-                  ),
+                    textAlign:TextAlign.center,
+
+
+                    style: TextStyle(
+
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 25,
+                    ),
                   ),
                 ),
               ),
-               Center(
-                
+              Center(
+
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 20,left: 40,),
                   child: Text('connecting zindagi.....',
-                  textAlign:TextAlign.center,
-                              
-                  
-                  style: TextStyle(
-                    
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 15,
-                  ),
+                    textAlign:TextAlign.center,
+
+
+                    style: TextStyle(
+
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15,
+                    ),
                   ),
                 ),
               ),
@@ -80,7 +80,7 @@ class firstpage extends StatelessWidget {
               },
               child: Text('Logout'),
               style: ElevatedButton.styleFrom(
-               
+
               ),
             )
           ],
@@ -89,7 +89,7 @@ class firstpage extends StatelessWidget {
         body: currentUser != null && currentUser.uid != null
             ? FirestoreFetchUserScreen(userUid: currentUser.uid)
             : Center(child: Text('User not authenticated')),
-        backgroundColor: Colors.white, 
+        backgroundColor: Colors.white,
       ),
     );
   }
