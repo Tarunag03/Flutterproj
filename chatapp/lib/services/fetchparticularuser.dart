@@ -32,8 +32,7 @@ class _FirestoreFetchUserScreenState extends State<FirestoreFetchUserScreen> {
       appBar: AppBar(
         
       ),
-      drawer: Drawer(
-        child: ListView(
+     body:  ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
             Container(
@@ -41,11 +40,9 @@ class _FirestoreFetchUserScreenState extends State<FirestoreFetchUserScreen> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(
                     MediaQuery.of(context).size.height / 4),
-                child: DrawerHeader(
-                  decoration: BoxDecoration(
-                    color: Colors.lightBlue,
-                  ),
-                  child: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                child: 
+                
+                  FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                     future: userDocument,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -77,12 +74,12 @@ class _FirestoreFetchUserScreenState extends State<FirestoreFetchUserScreen> {
                       }
                     },
                   ),
-                ),
+                
               ),
             ),
           ],
         ),
-      ),
+      
       
     );
   }

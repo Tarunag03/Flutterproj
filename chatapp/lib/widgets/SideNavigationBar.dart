@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:chatapp/services/contactfetch.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get_navigation/get_navigation.dart';
@@ -21,7 +22,7 @@ class _SideNavigationBarState extends State<SideNavigationBarComponent> {
       child: Text('Settings'),
     ),
     Center(
-      child: Text('Contacts'),
+      child: ContactScreen(),
     ),
     Center(
       child: Text('Profile'),
