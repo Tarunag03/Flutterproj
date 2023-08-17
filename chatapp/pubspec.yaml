@@ -53,6 +53,7 @@ dependencies:
   url_launcher: ^6.1.12
   hexcolor: ^3.0.1
   get: ^4.6.5
+  side_navigation: ^1.0.4
 
 dev_dependencies:
   flutter_test:

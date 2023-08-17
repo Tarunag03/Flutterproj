@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:chatapp/screens/login.dart';
 import 'package:chatapp/services/fetchparticularuser.dart';
+import 'package:chatapp/widgets/SideNavigationBar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -34,19 +35,15 @@ class firstpage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: Column(
+          title: const Column(
             children: [
-
               Center(
-
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 1,right: 30,top: 15),
-                  child: Text('Namaste',
-                    textAlign:TextAlign.center,
-
-
+                  padding: EdgeInsets.only(bottom: 1, right: 30, top: 15),
+                  child: Text(
+                    'Namaste',
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
                       fontSize: 25,
@@ -55,15 +52,15 @@ class firstpage extends StatelessWidget {
                 ),
               ),
               Center(
-
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 20,left: 40,),
-                  child: Text('connecting zindagi.....',
-                    textAlign:TextAlign.center,
-
-
+                  padding: EdgeInsets.only(
+                    bottom: 20,
+                    left: 40,
+                  ),
+                  child: Text(
+                    'connecting zindagi.....',
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
                       fontSize: 15,
@@ -79,17 +76,12 @@ class firstpage extends StatelessWidget {
                 logout(context);
               },
               child: Text('Logout'),
-              style: ElevatedButton.styleFrom(
-
-              ),
+              style: ElevatedButton.styleFrom(),
             )
           ],
           backgroundColor: Colors.pinkAccent[100],
         ),
-        body: currentUser != null && currentUser.uid != null
-            ? FirestoreFetchUserScreen(userUid: currentUser.uid)
-            : Center(child: Text('User not authenticated')),
-        backgroundColor: Colors.white,
+        body: const SideNavigationBarComponent(),
       ),
     );
   }
