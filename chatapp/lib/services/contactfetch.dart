@@ -3,6 +3,7 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class ContactScreen extends StatefulWidget {
   const ContactScreen({Key? key}) : super(key: key);
@@ -188,8 +189,8 @@ class _ContactScreenState extends State<ContactScreen> {
   }
 
   void _makePhoneCall(String phoneNumber) async {
-    if (await canLaunch('tel:$phoneNumber')) {
-      await launch('tel:$phoneNumber');
+    if (await canLaunchUrlString('tel:$phoneNumber')) {
+      await launchUrlString('tel:$phoneNumber');
     } else {
       throw 'Could not launch $phoneNumber';
     }
