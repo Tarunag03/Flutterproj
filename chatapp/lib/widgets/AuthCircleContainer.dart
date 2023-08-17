@@ -1,8 +1,8 @@
 import 'package:chatapp/screens/PhoneAuthScreen.dart';
-import 'package:chatapp/screens/ProfileCompleteScreen.dart';
+
 import 'package:chatapp/screens/firstpage.dart';
 import 'package:chatapp/screens/login.dart';
-import 'package:chatapp/widgets/reuable_widget.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -47,35 +47,33 @@ class _AuthContainerState extends State<AuthContainer> {
     return null;
   }
 
+  void newuser() async {
+    UserCredential? userCredential = await googleLogin();
+    if (userCredential != null) {
+      String? uid = userCredential.user?.uid;
+      String? username = userCredential.user?.displayName;
+      String? email = userCredential.user?.email;
 
+      if (uid != null) {
+        // Store user data in Firebase Firestore
+        FirebaseFirestore.instance.collection('users').doc(uid).set({
+          'username': username,
+          'email': email,
+          'uid': uid,
+        });
 
-void newuser() async {
-  UserCredential? userCredential = await googleLogin();
-  if (userCredential != null) {
-    String? uid = userCredential.user?.uid;
-    String? username = userCredential.user?.displayName;
-    String? email = userCredential.user?.email;
-
-    if (uid != null) {
-      // Store user data in Firebase Firestore
-      FirebaseFirestore.instance.collection('users').doc(uid).set({
-        'username': username,
-        'email': email,
-        'uid':uid,
-      });
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => firstpage(userUid: uid)),
-      );
-    } else {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => Login()),
-      );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => firstpage(userUid: uid)),
+        );
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Login()),
+        );
+      }
     }
   }
-}
 
   void _changeScreen() async {
     if (widget.auth == "phone") {
