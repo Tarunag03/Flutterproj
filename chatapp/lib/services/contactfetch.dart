@@ -1,9 +1,19 @@
-import 'dart:math';
-import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:math';
+
+
+
+class ContactApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: ContactScreen(),
+    );
+  }
+}
 
 class ContactScreen extends StatefulWidget {
   const ContactScreen({Key? key}) : super(key: key);
@@ -13,188 +23,158 @@ class ContactScreen extends StatefulWidget {
 }
 
 class _ContactScreenState extends State<ContactScreen> {
-  List<Contact> allContacts = [];
-  List<Contact> displayedContacts = [];
+  List<Map<String, dynamic>> allUsers = [];
+  List<Map<String, dynamic>> displayedUsers = [];
   TextEditingController searchController = TextEditingController();
+  IconData initialLetterIcon = Icons.person;
   bool isLoading = true;
+
+  late String currentUserId;
 
   @override
   void initState() {
     super.initState();
-    getContactPermission();
+    getCurrentUser();
+    fetchUsers();
   }
 
-  void getContactPermission() async {
-    if (await Permission.contacts.isGranted) {
-      fetchContacts();
-    } else {
-      await Permission.contacts.request();
-    }
+  void getCurrentUser() {
+    final User? user = FirebaseAuth.instance.currentUser;
+    currentUserId = user?.uid ?? '';
   }
 
-  void fetchContacts() async {
-    allContacts = await ContactsService.getContacts();
+  void fetchUsers() async {
+    final usersSnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .get();
+
+    final List<Map<String, dynamic>> users = usersSnapshot.docs
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .toList();
 
     setState(() {
       isLoading = false;
-      displayedContacts = allContacts;
+      allUsers = users;
+      displayedUsers = users;
     });
   }
 
-  void searchContacts(String query) {
-    List<Contact> searchResults = [];
+  void sendFriendRequest(String username, String friendUid) async {
+    final chatRoomId = generateChatRoomId();
+
+    final friendRequest = {
+      'icon': initialLetterIcon.codePoint,
+      'username': username,
+      'chatRoomId': chatRoomId,
+    };
+
+    final currentUserRef =
+        FirebaseFirestore.instance.collection('users').doc(currentUserId);
+
+    await currentUserRef.update({
+      'friendRequests': FieldValue.arrayUnion([friendRequest]),
+    });
+
+    print('Friend request sent to $username');
+  }
+
+  String generateChatRoomId() {
+    return 'chat_room_${Random().nextInt(10000)}';
+  }
+
+  void searchUsers(String query) {
+    List<Map<String, dynamic>> searchResults = [];
 
     if (query.isNotEmpty) {
-      searchResults = allContacts.where((contact) {
-        return contact.displayName
-            ?.toLowerCase()
-            .contains(query.toLowerCase()) ??
-            false;
+      searchResults = allUsers.where((user) {
+        return user['username']
+            .toLowerCase()
+            .contains(query.toLowerCase());
       }).toList();
     } else {
-      searchResults = List.from(allContacts);
+      searchResults = List.from(allUsers);
     }
 
     setState(() {
-      displayedContacts = searchResults;
+      displayedUsers = searchResults;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusScopeNode currentFocus = FocusScope.of(context);
-        if (!currentFocus.hasPrimaryFocus) {
-          currentFocus.unfocus();
-        }
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: Text("Contacts"),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  controller: searchController,
-                  onChanged: searchContacts,
-                  decoration: InputDecoration(
-                    labelText: "Search",
-                    prefixIcon: Icon(Icons.search),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(40),
-                    ),
-                    hoverColor: Colors.pinkAccent[100],
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text("Usernames"),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: searchController,
+                onChanged: searchUsers,
+                decoration: InputDecoration(
+                  labelText: "Search",
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(40),
                   ),
                 ),
               ),
-              isLoading
-                  ? Center(
-                child: CircularProgressIndicator(),
-              )
-                  : ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: displayedContacts.length,
-                itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () {
-                      _makePhoneCall(displayedContacts[index]
-                          .phones![0]
-                          .value!);
-                    },
-                    child: ListTile(
-                      leading: Container(
-                        height: 30,
-                        width: 30,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              blurRadius: 7,
-                              color: Colors.white.withOpacity(0.1),
-                              offset: const Offset(-3, -3),
+            ),
+            isLoading
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: displayedUsers.length,
+                    itemBuilder: (context, index) {
+                      final username = displayedUsers[index]['username'];
+                      final uid = displayedUsers[index]['uid'];
+
+                     
+                      if (uid == currentUserId) {
+                        return Container(); 
+                      }
+
+                      return ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor: Colors.pinkAccent[100],
+                          child: Text(
+                            username[0].toUpperCase(),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
                             ),
-                            BoxShadow(
-                              blurRadius: 7,
-                              color: Color.fromARGB(
-                                255,
-                                255,
-                                139,
-                                220,
-                              ).withOpacity(0.7),
-                              offset: const Offset(3, 3),
-                            ),
-                          ],
-                          borderRadius: BorderRadius.circular(6),
-                          color: Colors.pinkAccent[100],
+                          ),
                         ),
-                        child: Text(
-                          displayedContacts[index]
-                              .givenName![0],
+                        title: Text(
+                          username,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            fontSize: 23,
-                            color: Colors.primaries[
-                            Random().nextInt(
-                                Colors.primaries.length)],
+                            fontSize: 16,
+                            color: Colors.black,
                             fontFamily: "Poppins",
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                      ),
-                      title: Text(
-                        displayedContacts[index].givenName!,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w500,
+                        trailing: IconButton(
+                          icon: Icon(Icons.person_add),
+                          onPressed: () {
+                            sendFriendRequest(username,uid);
+                          },
                         ),
-                      ),
-                      subtitle: Text(
-                        displayedContacts[index]
-                            .phones![0]
-                            .value!,
-                        style: TextStyle(
-                          fontSize: 11,
-                          color: Colors.black,
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      trailing: IconButton(
-                        icon: Icon(Icons.call,color:Colors.blue),
-                        onPressed: () {
-                          _makePhoneCall(displayedContacts[index]
-                              .phones![0]
-                              .value!);
-                        },
-                      ),
-                      horizontalTitleGap: 12,
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
+                      );
+                    },
+                  ),
+          ],
         ),
       ),
     );
   }
-
-  void _makePhoneCall(String phoneNumber) async {
-    if (await canLaunchUrlString('tel:$phoneNumber')) {
-      await launchUrlString('tel:$phoneNumber');
-    } else {
-      throw 'Could not launch $phoneNumber';
-    }
-  }
 }
-
-
