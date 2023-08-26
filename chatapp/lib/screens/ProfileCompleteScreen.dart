@@ -17,10 +17,14 @@ class ProfileCompleteScreen extends StatelessWidget {
       "username": usernameController.text.trim(),
       "email": emailController.text.trim(),
       "uid": user.uid,
-      "profilecomplete":true,
+      "profilecomplete": true,
+      "friends": [],
     };
 
-    await FirebaseFirestore.instance.collection("users").doc(user.uid).set(userData); // Use set instead of add
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(user.uid)
+        .set(userData); // Use set instead of add
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -106,8 +110,7 @@ class ProfileCompleteScreen extends StatelessWidget {
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           await inputData(auth.currentUser!);
-                       checkProfileAndNavigate(auth.currentUser!, context);
-                      
+                          checkProfileAndNavigate(auth.currentUser!, context);
                         }
                       },
                       child: const Text(

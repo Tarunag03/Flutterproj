@@ -60,6 +60,7 @@ class _AuthContainerState extends State<AuthContainer> {
           'username': username,
           'email': email,
           'uid': uid,
+          'friends': [],
         });
 
         Navigator.push(

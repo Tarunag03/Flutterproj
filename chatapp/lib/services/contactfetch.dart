@@ -1,17 +1,24 @@
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contacts_service/contacts_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class ContactScreen extends StatefulWidget {
-  const ContactScreen({Key? key}) : super(key: key);
+final userDocument = FirebaseFirestore.instance.collection('users');
 
+class ContactScreen extends StatefulWidget {
+  const ContactScreen({Key? key, required this.userUid}) : super(key: key);
+  final String userUid;
   @override
   State<ContactScreen> createState() => _ContactScreenState();
 }
 
 class _ContactScreenState extends State<ContactScreen> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  void addFriend() {}
+
   List<Contact> allContacts = [];
   List<Contact> displayedContacts = [];
   TextEditingController searchController =
@@ -21,9 +28,16 @@ class _ContactScreenState extends State<ContactScreen> {
 
   @override
   void initState() {
-
     super.initState();
+    user();
     getContactPermission();
+  }
+
+  user() {
+    userDocument.doc(widget.userUid).get().then((DocumentSnapshot doc) {
+      var data = doc.data();
+      print(data);
+    });
   }
 
   void getContactPermission() async {
@@ -38,8 +52,6 @@ class _ContactScreenState extends State<ContactScreen> {
     allContacts = await ContactsService.getContacts();
 
     setState(() {
-    
-      
       isLoading = false;
       displayedContacts = allContacts;
     });
@@ -70,7 +82,7 @@ class _ContactScreenState extends State<ContactScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text("Contacts"),
+        title: const Text("Contacts"),
       ),
       body: Column(
         children: [
@@ -81,14 +93,18 @@ class _ContactScreenState extends State<ContactScreen> {
               onChanged: searchContacts,
               decoration: InputDecoration(
                   labelText: "Search",
-                  prefixIcon: Icon(Icons.search),
+                  prefixIcon: const Icon(Icons.search),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(40)),
                   hoverColor: Colors.pinkAccent[100]),
             ),
           ),
+          IconButton(
+            onPressed: addFriend,
+            icon: const Icon(Icons.add),
+          ),
           isLoading
-              ? Center(
+              ? const Center(
                   child: CircularProgressIndicator(),
                 )
               : Expanded(
@@ -131,7 +147,7 @@ class _ContactScreenState extends State<ContactScreen> {
                         displayedContacts[index].givenName!,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                           color: Colors.black,
                           fontFamily: "Poppins",
@@ -140,7 +156,7 @@ class _ContactScreenState extends State<ContactScreen> {
                       ),
                       subtitle: Text(
                         displayedContacts[index].phones![0].value!,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 11,
                           color: Colors.black,
                           fontFamily: "Poppins",
