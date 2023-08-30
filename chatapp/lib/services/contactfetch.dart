@@ -4,12 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:math';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:contacts_service/contacts_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
-
 class ContactApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -19,11 +13,9 @@ class ContactApp extends StatelessWidget {
   }
 }
 
-final userDocument = FirebaseFirestore.instance.collection('users');
-
 class ContactScreen extends StatefulWidget {
-  const ContactScreen({Key? key, required this.userUid}) : super(key: key);
-  final String userUid;
+  const ContactScreen({Key? key}) : super(key: key);
+
   @override
   State<ContactScreen> createState() => _ContactScreenState();
 }
@@ -36,6 +28,7 @@ class _ContactScreenState extends State<ContactScreen> {
   bool isLoading = true;
 
   late String currentUserId;
+  late String currentUserName;
 
   @override
   void initState() {
@@ -72,7 +65,6 @@ class _ContactScreenState extends State<ContactScreen> {
       'username': username,
       'chatRoomId': chatRoomId,
     };
-
     final currentUserRef =
         FirebaseFirestore.instance.collection('users').doc(currentUserId);
 
@@ -81,6 +73,17 @@ class _ContactScreenState extends State<ContactScreen> {
     });
 
     print('Friend request sent to $username');
+    final friendRequest2 = {
+      'icon': initialLetterIcon.codePoint,
+      'username': friendUid,
+      'chatRoomId': chatRoomId,
+    };
+
+    final recieverUserRef =
+        FirebaseFirestore.instance.collection('users').doc(friendUid);
+    await recieverUserRef.update({
+      'friendRequests': FieldValue.arrayUnion([friendRequest2]),
+    });
   }
 
   String generateChatRoomId() {
@@ -120,7 +123,7 @@ class _ContactScreenState extends State<ContactScreen> {
                 onChanged: searchUsers,
                 decoration: InputDecoration(
                   labelText: "Search",
-                  prefixIcon: const Icon(Icons.search),
+                  prefixIcon: Icon(Icons.search),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(40),
                   ),

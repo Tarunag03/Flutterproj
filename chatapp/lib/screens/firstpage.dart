@@ -75,15 +75,13 @@ class firstpage extends StatelessWidget {
               onPressed: () {
                 logout(context);
               },
-              child: const Text('Logout'),
+              child: Text('Logout'),
               style: ElevatedButton.styleFrom(),
             )
           ],
           backgroundColor: Colors.pinkAccent[100],
         ),
-        body: SideNavigationBarComponent(
-          userUid: userUid,
-        ),
+        body: const SideNavigationBarComponent(),
       ),
     );
   }

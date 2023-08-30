@@ -7,36 +7,33 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:side_navigation/side_navigation.dart';
 
 class SideNavigationBarComponent extends StatefulWidget {
-  const SideNavigationBarComponent({super.key, required this.userUid});
-  final String userUid;
+  const SideNavigationBarComponent({super.key});
   State<SideNavigationBarComponent> createState() {
     return _SideNavigationBarState();
   }
 }
 
 class _SideNavigationBarState extends State<SideNavigationBarComponent> {
+  List<Widget> views = const [
+    Center(
+      child: Text('Dashboard'),
+    ),
+    Center(
+      child: Text('Settings'),
+    ),
+    Center(
+      child: ContactScreen(),
+    ),
+    Center(
+      child: Text('Profile'),
+    ),
+    Center(
+      child: Text('Dashboard'),
+    ),
+  ];
   int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
-    List<Widget> views = [
-      const Center(
-        child: Text('Dashboard'),
-      ),
-      const Center(
-        child: Text('Settings'),
-      ),
-      Center(
-        child: ContactScreen(
-          userUid: widget.userUid,
-        ),
-      ),
-      const Center(
-        child: Text('Profile'),
-      ),
-      const Center(
-        child: Text('Dashboard'),
-      ),
-    ];
     return SafeArea(
       child: Row(
         children: [
