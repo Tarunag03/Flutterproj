@@ -1,36 +1,22 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:math';
 
-class ContactApp extends StatelessWidget {
+class Friendreq extends StatefulWidget {
+  const Friendreq({super.key});
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: ContactScreen(),
-    );
+  State<StatefulWidget> createState() {
+    return _FriendreqState();
   }
 }
 
-class ContactScreen extends StatefulWidget {
-  const ContactScreen({Key? key}) : super(key: key);
-
-  @override
-  State<ContactScreen> createState() => _ContactScreenState();
-}
-
-class _ContactScreenState extends State<ContactScreen> {
+class _FriendreqState extends State<Friendreq> {
   List<Map<String, dynamic>> allUsers = [];
   List<Map<String, dynamic>> displayedUsers = [];
-  TextEditingController searchController = TextEditingController();
-  IconData initialLetterIcon = Icons.person;
   bool isLoading = true;
-
   late String currentUserId;
-  late String currentUserName;
 
   @override
   void initState() {
@@ -59,62 +45,6 @@ class _ContactScreenState extends State<ContactScreen> {
     });
   }
 
-  void sendFriendRequest(String username, String friendUid) async {
-    final chatRoomId = generateChatRoomId();
-
-    final friendRequest = {
-      'icon': initialLetterIcon.codePoint,
-      'username': username,
-      'chatRoomId': chatRoomId,
-      'status': true,
-    };
-    final currentUserRef =
-        FirebaseFirestore.instance.collection('users').doc(currentUserId);
-
-    await currentUserRef.update({
-      'friendRequests': FieldValue.arrayUnion([friendRequest]),
-    });
-    String user = await currentUserRef.get().then((DocumentSnapshot doc) {
-      return doc.data().toString();
-    });
-    final raj = await jsonDecode(user);
-    //data fetch not work
-    print('Friend request sent to $username');
-    final friendRequest2 = {
-      'icon': initialLetterIcon.codePoint,
-      'username': friendUid,
-      'chatRoomId': chatRoomId,
-      'status': false,
-    };
-
-    final recieverUserRef =
-        FirebaseFirestore.instance.collection('users').doc(friendUid);
-    await recieverUserRef.update({
-      'friendRequests': FieldValue.arrayUnion([friendRequest2]),
-    });
-  }
-
-  String generateChatRoomId() {
-    return 'chat_room_${Random().nextInt(10000)}';
-  }
-
-  void searchUsers(String query) {
-    List<Map<String, dynamic>> searchResults = [];
-
-    if (query.isNotEmpty) {
-      searchResults = allUsers.where((user) {
-        return user['username'].toLowerCase().contains(query.toLowerCase());
-      }).toList();
-    } else {
-      searchResults = List.from(allUsers);
-    }
-
-    setState(() {
-      displayedUsers = searchResults;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
