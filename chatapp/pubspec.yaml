@@ -36,7 +36,7 @@ dependencies:
   firebase_storage: ^11.2.5
   image_picker: ^1.0.2
   uuid: ^3.0.6
-  firebase_messaging: ^14.6.5
+  firebase_messaging: ^14.6.6
   google_sign_in: ^6.1.4
   
 
